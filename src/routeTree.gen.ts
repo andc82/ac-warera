@@ -19,10 +19,14 @@ import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppWareraMeRouteImport } from './routes/app.warera.me'
 import { Route as AppWareraDashboardRouteImport } from './routes/app.warera.dashboard'
+import { Route as AppWareraUsersIndexRouteImport } from './routes/app.warera.users.index'
 import { Route as AppWareraRegionsIndexRouteImport } from './routes/app.warera.regions.index'
 import { Route as AppWareraCountriesIndexRouteImport } from './routes/app.warera.countries.index'
+import { Route as AppWareraCompaniesIndexRouteImport } from './routes/app.warera.companies.index'
+import { Route as AppWareraUsersIdRouteImport } from './routes/app.warera.users.$id'
 import { Route as AppWareraRegionsIdRouteImport } from './routes/app.warera.regions.$id'
 import { Route as AppWareraCountriesIdRouteImport } from './routes/app.warera.countries.$id'
+import { Route as AppWareraCompaniesIdRouteImport } from './routes/app.warera.companies.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -74,6 +78,11 @@ const AppWareraDashboardRoute = AppWareraDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppWareraRoute,
 } as any)
+const AppWareraUsersIndexRoute = AppWareraUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AppWareraRoute,
+} as any)
 const AppWareraRegionsIndexRoute = AppWareraRegionsIndexRouteImport.update({
   id: '/regions/',
   path: '/regions/',
@@ -84,6 +93,16 @@ const AppWareraCountriesIndexRoute = AppWareraCountriesIndexRouteImport.update({
   path: '/countries/',
   getParentRoute: () => AppWareraRoute,
 } as any)
+const AppWareraCompaniesIndexRoute = AppWareraCompaniesIndexRouteImport.update({
+  id: '/companies/',
+  path: '/companies/',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraUsersIdRoute = AppWareraUsersIdRouteImport.update({
+  id: '/users/$id',
+  path: '/users/$id',
+  getParentRoute: () => AppWareraRoute,
+} as any)
 const AppWareraRegionsIdRoute = AppWareraRegionsIdRouteImport.update({
   id: '/regions/$id',
   path: '/regions/$id',
@@ -92,6 +111,11 @@ const AppWareraRegionsIdRoute = AppWareraRegionsIdRouteImport.update({
 const AppWareraCountriesIdRoute = AppWareraCountriesIdRouteImport.update({
   id: '/countries/$id',
   path: '/countries/$id',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraCompaniesIdRoute = AppWareraCompaniesIdRouteImport.update({
+  id: '/companies/$id',
+  path: '/companies/$id',
   getParentRoute: () => AppWareraRoute,
 } as any)
 
@@ -106,10 +130,14 @@ export interface FileRoutesByFullPath {
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
+  '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/companies/': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries/': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions/': typeof AppWareraRegionsIndexRoute
+  '/app/warera/users/': typeof AppWareraUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,10 +150,14 @@ export interface FileRoutesByTo {
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
+  '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/companies': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions': typeof AppWareraRegionsIndexRoute
+  '/app/warera/users': typeof AppWareraUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,10 +171,14 @@ export interface FileRoutesById {
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
+  '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/companies/': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries/': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions/': typeof AppWareraRegionsIndexRoute
+  '/app/warera/users/': typeof AppWareraUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,10 +193,14 @@ export interface FileRouteTypes {
     | '/app/warera'
     | '/app/warera/dashboard'
     | '/app/warera/me'
+    | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
+    | '/app/warera/users/$id'
+    | '/app/warera/companies/'
     | '/app/warera/countries/'
     | '/app/warera/regions/'
+    | '/app/warera/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,10 +213,14 @@ export interface FileRouteTypes {
     | '/app/warera'
     | '/app/warera/dashboard'
     | '/app/warera/me'
+    | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
+    | '/app/warera/users/$id'
+    | '/app/warera/companies'
     | '/app/warera/countries'
     | '/app/warera/regions'
+    | '/app/warera/users'
   id:
     | '__root__'
     | '/'
@@ -189,10 +233,14 @@ export interface FileRouteTypes {
     | '/app/warera'
     | '/app/warera/dashboard'
     | '/app/warera/me'
+    | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
+    | '/app/warera/users/$id'
+    | '/app/warera/companies/'
     | '/app/warera/countries/'
     | '/app/warera/regions/'
+    | '/app/warera/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -274,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWareraDashboardRouteImport
       parentRoute: typeof AppWareraRoute
     }
+    '/app/warera/users/': {
+      id: '/app/warera/users/'
+      path: '/users'
+      fullPath: '/app/warera/users/'
+      preLoaderRoute: typeof AppWareraUsersIndexRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
     '/app/warera/regions/': {
       id: '/app/warera/regions/'
       path: '/regions'
@@ -286,6 +341,20 @@ declare module '@tanstack/react-router' {
       path: '/countries'
       fullPath: '/app/warera/countries/'
       preLoaderRoute: typeof AppWareraCountriesIndexRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/companies/': {
+      id: '/app/warera/companies/'
+      path: '/companies'
+      fullPath: '/app/warera/companies/'
+      preLoaderRoute: typeof AppWareraCompaniesIndexRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/users/$id': {
+      id: '/app/warera/users/$id'
+      path: '/users/$id'
+      fullPath: '/app/warera/users/$id'
+      preLoaderRoute: typeof AppWareraUsersIdRouteImport
       parentRoute: typeof AppWareraRoute
     }
     '/app/warera/regions/$id': {
@@ -302,25 +371,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWareraCountriesIdRouteImport
       parentRoute: typeof AppWareraRoute
     }
+    '/app/warera/companies/$id': {
+      id: '/app/warera/companies/$id'
+      path: '/companies/$id'
+      fullPath: '/app/warera/companies/$id'
+      preLoaderRoute: typeof AppWareraCompaniesIdRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
   }
 }
 
 interface AppWareraRouteChildren {
   AppWareraDashboardRoute: typeof AppWareraDashboardRoute
   AppWareraMeRoute: typeof AppWareraMeRoute
+  AppWareraCompaniesIdRoute: typeof AppWareraCompaniesIdRoute
   AppWareraCountriesIdRoute: typeof AppWareraCountriesIdRoute
   AppWareraRegionsIdRoute: typeof AppWareraRegionsIdRoute
+  AppWareraUsersIdRoute: typeof AppWareraUsersIdRoute
+  AppWareraCompaniesIndexRoute: typeof AppWareraCompaniesIndexRoute
   AppWareraCountriesIndexRoute: typeof AppWareraCountriesIndexRoute
   AppWareraRegionsIndexRoute: typeof AppWareraRegionsIndexRoute
+  AppWareraUsersIndexRoute: typeof AppWareraUsersIndexRoute
 }
 
 const AppWareraRouteChildren: AppWareraRouteChildren = {
   AppWareraDashboardRoute: AppWareraDashboardRoute,
   AppWareraMeRoute: AppWareraMeRoute,
+  AppWareraCompaniesIdRoute: AppWareraCompaniesIdRoute,
   AppWareraCountriesIdRoute: AppWareraCountriesIdRoute,
   AppWareraRegionsIdRoute: AppWareraRegionsIdRoute,
+  AppWareraUsersIdRoute: AppWareraUsersIdRoute,
+  AppWareraCompaniesIndexRoute: AppWareraCompaniesIndexRoute,
   AppWareraCountriesIndexRoute: AppWareraCountriesIndexRoute,
   AppWareraRegionsIndexRoute: AppWareraRegionsIndexRoute,
+  AppWareraUsersIndexRoute: AppWareraUsersIndexRoute,
 }
 
 const AppWareraRouteWithChildren = AppWareraRoute._addFileChildren(
