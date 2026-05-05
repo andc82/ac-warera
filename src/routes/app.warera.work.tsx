@@ -13,7 +13,7 @@ function WorkPage() {
       <PageHeader title="Lavoro & Salari" description="Offerte di lavoro paginate" icon={Briefcase} />
       {isLoading && <LoadingState />}
       {error && <ErrorState error={error} />}
-      {data && <Card><CardContent className="pt-6"><JsonBlock data={data} /></CardContent></Card>}
+      {data ? <Card><CardContent className="pt-6"><JsonBlock data={data} /></CardContent></Card> : null}
     </div>
   );
 }

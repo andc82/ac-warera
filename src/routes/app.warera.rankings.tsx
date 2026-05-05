@@ -13,7 +13,7 @@ function RankingsPage() {
       <PageHeader title="Classifiche" description="Top giocatori globali" icon={Trophy} />
       {isLoading && <LoadingState />}
       {error && <ErrorState error={error} />}
-      {data && <Card><CardContent className="pt-6"><JsonBlock data={data} /></CardContent></Card>}
+      {data ? <Card><CardContent className="pt-6"><JsonBlock data={data} /></CardContent></Card> : null}
     </div>
   );
 }
