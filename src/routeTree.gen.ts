@@ -17,16 +17,25 @@ import { Route as AppWareraRouteImport } from './routes/app.warera'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppWareraWorkRouteImport } from './routes/app.warera.work'
+import { Route as AppWareraTransactionsRouteImport } from './routes/app.warera.transactions'
+import { Route as AppWareraSearchRouteImport } from './routes/app.warera.search'
+import { Route as AppWareraRankingsRouteImport } from './routes/app.warera.rankings'
 import { Route as AppWareraMeRouteImport } from './routes/app.warera.me'
+import { Route as AppWareraItemsRouteImport } from './routes/app.warera.items'
 import { Route as AppWareraDashboardRouteImport } from './routes/app.warera.dashboard'
 import { Route as AppWareraUsersIndexRouteImport } from './routes/app.warera.users.index'
 import { Route as AppWareraRegionsIndexRouteImport } from './routes/app.warera.regions.index'
 import { Route as AppWareraCountriesIndexRouteImport } from './routes/app.warera.countries.index'
 import { Route as AppWareraCompaniesIndexRouteImport } from './routes/app.warera.companies.index'
+import { Route as AppWareraBattlesIndexRouteImport } from './routes/app.warera.battles.index'
+import { Route as AppWareraArticlesIndexRouteImport } from './routes/app.warera.articles.index'
 import { Route as AppWareraUsersIdRouteImport } from './routes/app.warera.users.$id'
 import { Route as AppWareraRegionsIdRouteImport } from './routes/app.warera.regions.$id'
 import { Route as AppWareraCountriesIdRouteImport } from './routes/app.warera.countries.$id'
 import { Route as AppWareraCompaniesIdRouteImport } from './routes/app.warera.companies.$id'
+import { Route as AppWareraBattlesIdRouteImport } from './routes/app.warera.battles.$id'
+import { Route as AppWareraArticlesIdRouteImport } from './routes/app.warera.articles.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -68,9 +77,34 @@ const AppAdminRoute = AppAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
+const AppWareraWorkRoute = AppWareraWorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraTransactionsRoute = AppWareraTransactionsRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraSearchRoute = AppWareraSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraRankingsRoute = AppWareraRankingsRouteImport.update({
+  id: '/rankings',
+  path: '/rankings',
+  getParentRoute: () => AppWareraRoute,
+} as any)
 const AppWareraMeRoute = AppWareraMeRouteImport.update({
   id: '/me',
   path: '/me',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraItemsRoute = AppWareraItemsRouteImport.update({
+  id: '/items',
+  path: '/items',
   getParentRoute: () => AppWareraRoute,
 } as any)
 const AppWareraDashboardRoute = AppWareraDashboardRouteImport.update({
@@ -98,6 +132,16 @@ const AppWareraCompaniesIndexRoute = AppWareraCompaniesIndexRouteImport.update({
   path: '/companies/',
   getParentRoute: () => AppWareraRoute,
 } as any)
+const AppWareraBattlesIndexRoute = AppWareraBattlesIndexRouteImport.update({
+  id: '/battles/',
+  path: '/battles/',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraArticlesIndexRoute = AppWareraArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles/',
+  getParentRoute: () => AppWareraRoute,
+} as any)
 const AppWareraUsersIdRoute = AppWareraUsersIdRouteImport.update({
   id: '/users/$id',
   path: '/users/$id',
@@ -118,6 +162,16 @@ const AppWareraCompaniesIdRoute = AppWareraCompaniesIdRouteImport.update({
   path: '/companies/$id',
   getParentRoute: () => AppWareraRoute,
 } as any)
+const AppWareraBattlesIdRoute = AppWareraBattlesIdRouteImport.update({
+  id: '/battles/$id',
+  path: '/battles/$id',
+  getParentRoute: () => AppWareraRoute,
+} as any)
+const AppWareraArticlesIdRoute = AppWareraArticlesIdRouteImport.update({
+  id: '/articles/$id',
+  path: '/articles/$id',
+  getParentRoute: () => AppWareraRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,11 +183,20 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
+  '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/rankings': typeof AppWareraRankingsRoute
+  '/app/warera/search': typeof AppWareraSearchRoute
+  '/app/warera/transactions': typeof AppWareraTransactionsRoute
+  '/app/warera/work': typeof AppWareraWorkRoute
+  '/app/warera/articles/$id': typeof AppWareraArticlesIdRoute
+  '/app/warera/battles/$id': typeof AppWareraBattlesIdRoute
   '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
   '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/articles/': typeof AppWareraArticlesIndexRoute
+  '/app/warera/battles/': typeof AppWareraBattlesIndexRoute
   '/app/warera/companies/': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries/': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions/': typeof AppWareraRegionsIndexRoute
@@ -149,11 +212,20 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
+  '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/rankings': typeof AppWareraRankingsRoute
+  '/app/warera/search': typeof AppWareraSearchRoute
+  '/app/warera/transactions': typeof AppWareraTransactionsRoute
+  '/app/warera/work': typeof AppWareraWorkRoute
+  '/app/warera/articles/$id': typeof AppWareraArticlesIdRoute
+  '/app/warera/battles/$id': typeof AppWareraBattlesIdRoute
   '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
   '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/articles': typeof AppWareraArticlesIndexRoute
+  '/app/warera/battles': typeof AppWareraBattlesIndexRoute
   '/app/warera/companies': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions': typeof AppWareraRegionsIndexRoute
@@ -170,11 +242,20 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
+  '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
+  '/app/warera/rankings': typeof AppWareraRankingsRoute
+  '/app/warera/search': typeof AppWareraSearchRoute
+  '/app/warera/transactions': typeof AppWareraTransactionsRoute
+  '/app/warera/work': typeof AppWareraWorkRoute
+  '/app/warera/articles/$id': typeof AppWareraArticlesIdRoute
+  '/app/warera/battles/$id': typeof AppWareraBattlesIdRoute
   '/app/warera/companies/$id': typeof AppWareraCompaniesIdRoute
   '/app/warera/countries/$id': typeof AppWareraCountriesIdRoute
   '/app/warera/regions/$id': typeof AppWareraRegionsIdRoute
   '/app/warera/users/$id': typeof AppWareraUsersIdRoute
+  '/app/warera/articles/': typeof AppWareraArticlesIndexRoute
+  '/app/warera/battles/': typeof AppWareraBattlesIndexRoute
   '/app/warera/companies/': typeof AppWareraCompaniesIndexRoute
   '/app/warera/countries/': typeof AppWareraCountriesIndexRoute
   '/app/warera/regions/': typeof AppWareraRegionsIndexRoute
@@ -192,11 +273,20 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/warera'
     | '/app/warera/dashboard'
+    | '/app/warera/items'
     | '/app/warera/me'
+    | '/app/warera/rankings'
+    | '/app/warera/search'
+    | '/app/warera/transactions'
+    | '/app/warera/work'
+    | '/app/warera/articles/$id'
+    | '/app/warera/battles/$id'
     | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
     | '/app/warera/users/$id'
+    | '/app/warera/articles/'
+    | '/app/warera/battles/'
     | '/app/warera/companies/'
     | '/app/warera/countries/'
     | '/app/warera/regions/'
@@ -212,11 +302,20 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/warera'
     | '/app/warera/dashboard'
+    | '/app/warera/items'
     | '/app/warera/me'
+    | '/app/warera/rankings'
+    | '/app/warera/search'
+    | '/app/warera/transactions'
+    | '/app/warera/work'
+    | '/app/warera/articles/$id'
+    | '/app/warera/battles/$id'
     | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
     | '/app/warera/users/$id'
+    | '/app/warera/articles'
+    | '/app/warera/battles'
     | '/app/warera/companies'
     | '/app/warera/countries'
     | '/app/warera/regions'
@@ -232,11 +331,20 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/warera'
     | '/app/warera/dashboard'
+    | '/app/warera/items'
     | '/app/warera/me'
+    | '/app/warera/rankings'
+    | '/app/warera/search'
+    | '/app/warera/transactions'
+    | '/app/warera/work'
+    | '/app/warera/articles/$id'
+    | '/app/warera/battles/$id'
     | '/app/warera/companies/$id'
     | '/app/warera/countries/$id'
     | '/app/warera/regions/$id'
     | '/app/warera/users/$id'
+    | '/app/warera/articles/'
+    | '/app/warera/battles/'
     | '/app/warera/companies/'
     | '/app/warera/countries/'
     | '/app/warera/regions/'
@@ -308,11 +416,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/warera/work': {
+      id: '/app/warera/work'
+      path: '/work'
+      fullPath: '/app/warera/work'
+      preLoaderRoute: typeof AppWareraWorkRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/transactions': {
+      id: '/app/warera/transactions'
+      path: '/transactions'
+      fullPath: '/app/warera/transactions'
+      preLoaderRoute: typeof AppWareraTransactionsRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/search': {
+      id: '/app/warera/search'
+      path: '/search'
+      fullPath: '/app/warera/search'
+      preLoaderRoute: typeof AppWareraSearchRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/rankings': {
+      id: '/app/warera/rankings'
+      path: '/rankings'
+      fullPath: '/app/warera/rankings'
+      preLoaderRoute: typeof AppWareraRankingsRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
     '/app/warera/me': {
       id: '/app/warera/me'
       path: '/me'
       fullPath: '/app/warera/me'
       preLoaderRoute: typeof AppWareraMeRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/items': {
+      id: '/app/warera/items'
+      path: '/items'
+      fullPath: '/app/warera/items'
+      preLoaderRoute: typeof AppWareraItemsRouteImport
       parentRoute: typeof AppWareraRoute
     }
     '/app/warera/dashboard': {
@@ -350,6 +493,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWareraCompaniesIndexRouteImport
       parentRoute: typeof AppWareraRoute
     }
+    '/app/warera/battles/': {
+      id: '/app/warera/battles/'
+      path: '/battles'
+      fullPath: '/app/warera/battles/'
+      preLoaderRoute: typeof AppWareraBattlesIndexRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/articles/': {
+      id: '/app/warera/articles/'
+      path: '/articles'
+      fullPath: '/app/warera/articles/'
+      preLoaderRoute: typeof AppWareraArticlesIndexRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
     '/app/warera/users/$id': {
       id: '/app/warera/users/$id'
       path: '/users/$id'
@@ -378,16 +535,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWareraCompaniesIdRouteImport
       parentRoute: typeof AppWareraRoute
     }
+    '/app/warera/battles/$id': {
+      id: '/app/warera/battles/$id'
+      path: '/battles/$id'
+      fullPath: '/app/warera/battles/$id'
+      preLoaderRoute: typeof AppWareraBattlesIdRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
+    '/app/warera/articles/$id': {
+      id: '/app/warera/articles/$id'
+      path: '/articles/$id'
+      fullPath: '/app/warera/articles/$id'
+      preLoaderRoute: typeof AppWareraArticlesIdRouteImport
+      parentRoute: typeof AppWareraRoute
+    }
   }
 }
 
 interface AppWareraRouteChildren {
   AppWareraDashboardRoute: typeof AppWareraDashboardRoute
+  AppWareraItemsRoute: typeof AppWareraItemsRoute
   AppWareraMeRoute: typeof AppWareraMeRoute
+  AppWareraRankingsRoute: typeof AppWareraRankingsRoute
+  AppWareraSearchRoute: typeof AppWareraSearchRoute
+  AppWareraTransactionsRoute: typeof AppWareraTransactionsRoute
+  AppWareraWorkRoute: typeof AppWareraWorkRoute
+  AppWareraArticlesIdRoute: typeof AppWareraArticlesIdRoute
+  AppWareraBattlesIdRoute: typeof AppWareraBattlesIdRoute
   AppWareraCompaniesIdRoute: typeof AppWareraCompaniesIdRoute
   AppWareraCountriesIdRoute: typeof AppWareraCountriesIdRoute
   AppWareraRegionsIdRoute: typeof AppWareraRegionsIdRoute
   AppWareraUsersIdRoute: typeof AppWareraUsersIdRoute
+  AppWareraArticlesIndexRoute: typeof AppWareraArticlesIndexRoute
+  AppWareraBattlesIndexRoute: typeof AppWareraBattlesIndexRoute
   AppWareraCompaniesIndexRoute: typeof AppWareraCompaniesIndexRoute
   AppWareraCountriesIndexRoute: typeof AppWareraCountriesIndexRoute
   AppWareraRegionsIndexRoute: typeof AppWareraRegionsIndexRoute
@@ -396,11 +576,20 @@ interface AppWareraRouteChildren {
 
 const AppWareraRouteChildren: AppWareraRouteChildren = {
   AppWareraDashboardRoute: AppWareraDashboardRoute,
+  AppWareraItemsRoute: AppWareraItemsRoute,
   AppWareraMeRoute: AppWareraMeRoute,
+  AppWareraRankingsRoute: AppWareraRankingsRoute,
+  AppWareraSearchRoute: AppWareraSearchRoute,
+  AppWareraTransactionsRoute: AppWareraTransactionsRoute,
+  AppWareraWorkRoute: AppWareraWorkRoute,
+  AppWareraArticlesIdRoute: AppWareraArticlesIdRoute,
+  AppWareraBattlesIdRoute: AppWareraBattlesIdRoute,
   AppWareraCompaniesIdRoute: AppWareraCompaniesIdRoute,
   AppWareraCountriesIdRoute: AppWareraCountriesIdRoute,
   AppWareraRegionsIdRoute: AppWareraRegionsIdRoute,
   AppWareraUsersIdRoute: AppWareraUsersIdRoute,
+  AppWareraArticlesIndexRoute: AppWareraArticlesIndexRoute,
+  AppWareraBattlesIndexRoute: AppWareraBattlesIndexRoute,
   AppWareraCompaniesIndexRoute: AppWareraCompaniesIndexRoute,
   AppWareraCountriesIndexRoute: AppWareraCountriesIndexRoute,
   AppWareraRegionsIndexRoute: AppWareraRegionsIndexRoute,
