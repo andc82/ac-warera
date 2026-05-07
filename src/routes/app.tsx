@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, LogOut, Settings, Sliders, LayoutDashboard,
   Globe2, Map, Users, Building2, Briefcase, Swords, Newspaper,
-  Coins, ArrowLeftRight, Trophy, Search,
+  Coins, ArrowLeftRight, Trophy, Search, UserCog,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({ component: AppLayout });
