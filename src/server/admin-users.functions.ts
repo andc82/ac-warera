@@ -16,7 +16,7 @@ async function assertAdmin(supabase: any, userId: string) {
 }
 
 export const listUsers = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context.supabase, context.userId);
 
@@ -59,7 +59,7 @@ export const setUserRole = createServerFn({ method: "POST" })
   .inputValidator((d) =>
     z.object({ userId: z.string().uuid(), role: z.enum(["admin", "viewer"]) }).parse(d),
   )
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
     const { error: delErr } = await supabaseAdmin
@@ -78,7 +78,7 @@ export const setUserBanned = createServerFn({ method: "POST" })
   .inputValidator((d) =>
     z.object({ userId: z.string().uuid(), banned: z.boolean() }).parse(d),
   )
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
     if (data.userId === context.userId) throw new Error("Non puoi disabilitare il tuo stesso account");
@@ -91,7 +91,7 @@ export const setUserBanned = createServerFn({ method: "POST" })
 
 export const deleteUser = createServerFn({ method: "POST" })
   .inputValidator((d) => z.object({ userId: z.string().uuid() }).parse(d))
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
     if (data.userId === context.userId) throw new Error("Non puoi eliminare il tuo stesso account");
