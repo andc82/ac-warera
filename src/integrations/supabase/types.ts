@@ -37,6 +37,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          api_call_count: number
           api_key: string | null
           created_at: string
           id: string
@@ -45,6 +46,7 @@ export type Database = {
           warera_user_id: string | null
         }
         Insert: {
+          api_call_count?: number
           api_key?: string | null
           created_at?: string
           id: string
@@ -53,6 +55,7 @@ export type Database = {
           warera_user_id?: string | null
         }
         Update: {
+          api_call_count?: number
           api_key?: string | null
           created_at?: string
           id?: string
@@ -95,6 +98,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_api_call_count: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "viewer"
