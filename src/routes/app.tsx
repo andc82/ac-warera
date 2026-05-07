@@ -86,7 +86,9 @@ function AppLayout() {
                 <SidebarGroupLabel>Admin</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    <Item to="/app/admin" icon={Sliders} label="Settings globali" active={isActive("/app/admin")} />
+                    <Item to="/app/admin" icon={Sliders} label="Settings globali" active={isActive("/app/admin") && !isActive("/app/admin/users")} />
+                    <Item to="/app/admin/users" icon={UserCog} label="Utenti" active={isActive("/app/admin/users")} />
+
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
