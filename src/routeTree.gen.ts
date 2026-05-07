@@ -24,6 +24,7 @@ import { Route as AppWareraRankingsRouteImport } from './routes/app.warera.ranki
 import { Route as AppWareraMeRouteImport } from './routes/app.warera.me'
 import { Route as AppWareraItemsRouteImport } from './routes/app.warera.items'
 import { Route as AppWareraDashboardRouteImport } from './routes/app.warera.dashboard'
+import { Route as AppAdminUsersRouteImport } from './routes/app.admin.users'
 import { Route as AppWareraUsersIndexRouteImport } from './routes/app.warera.users.index'
 import { Route as AppWareraRegionsIndexRouteImport } from './routes/app.warera.regions.index'
 import { Route as AppWareraCountriesIndexRouteImport } from './routes/app.warera.countries.index'
@@ -112,6 +113,11 @@ const AppWareraDashboardRoute = AppWareraDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppWareraRoute,
 } as any)
+const AppAdminUsersRoute = AppAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppWareraUsersIndexRoute = AppWareraUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -178,10 +184,11 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/app/admin': typeof AppAdminRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
+  '/app/admin/users': typeof AppAdminUsersRoute
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
@@ -207,10 +214,11 @@ export interface FileRoutesByTo {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/app/admin': typeof AppAdminRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
+  '/app/admin/users': typeof AppAdminUsersRoute
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
@@ -237,10 +245,11 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/app/admin': typeof AppAdminRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/dashboard': typeof AppDashboardRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/warera': typeof AppWareraRouteWithChildren
+  '/app/admin/users': typeof AppAdminUsersRoute
   '/app/warera/dashboard': typeof AppWareraDashboardRoute
   '/app/warera/items': typeof AppWareraItemsRoute
   '/app/warera/me': typeof AppWareraMeRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/settings'
     | '/app/warera'
+    | '/app/admin/users'
     | '/app/warera/dashboard'
     | '/app/warera/items'
     | '/app/warera/me'
@@ -301,6 +311,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/settings'
     | '/app/warera'
+    | '/app/admin/users'
     | '/app/warera/dashboard'
     | '/app/warera/items'
     | '/app/warera/me'
@@ -330,6 +341,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/settings'
     | '/app/warera'
+    | '/app/admin/users'
     | '/app/warera/dashboard'
     | '/app/warera/items'
     | '/app/warera/me'
@@ -465,6 +477,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWareraDashboardRouteImport
       parentRoute: typeof AppWareraRoute
     }
+    '/app/admin/users': {
+      id: '/app/admin/users'
+      path: '/users'
+      fullPath: '/app/admin/users'
+      preLoaderRoute: typeof AppAdminUsersRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/warera/users/': {
       id: '/app/warera/users/'
       path: '/users'
@@ -552,6 +571,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppAdminRouteChildren {
+  AppAdminUsersRoute: typeof AppAdminUsersRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminUsersRoute: AppAdminUsersRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
 interface AppWareraRouteChildren {
   AppWareraDashboardRoute: typeof AppWareraDashboardRoute
   AppWareraItemsRoute: typeof AppWareraItemsRoute
@@ -601,14 +632,14 @@ const AppWareraRouteWithChildren = AppWareraRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
-  AppAdminRoute: typeof AppAdminRoute
+  AppAdminRoute: typeof AppAdminRouteWithChildren
   AppDashboardRoute: typeof AppDashboardRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppWareraRoute: typeof AppWareraRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAdminRoute: AppAdminRoute,
+  AppAdminRoute: AppAdminRouteWithChildren,
   AppDashboardRoute: AppDashboardRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppWareraRoute: AppWareraRouteWithChildren,
