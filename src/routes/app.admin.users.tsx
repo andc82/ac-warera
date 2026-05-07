@@ -82,6 +82,9 @@ function AdminUsersPage() {
                   <tr>
                     <th className="py-2 pr-3">Nome</th>
                     <th className="py-2 pr-3">Email</th>
+                    <th className="py-2 pr-3">UserId WarEra</th>
+                    <th className="py-2 pr-3">API Key</th>
+                    <th className="py-2 pr-3 text-right">Chiamate</th>
                     <th className="py-2 pr-3">Ruolo</th>
                     <th className="py-2 pr-3">Stato</th>
                     <th className="py-2 pr-3">Ultimo accesso</th>
@@ -97,6 +100,11 @@ function AdminUsersPage() {
                       <tr key={u.id} className="border-b border-border/40">
                         <td className="py-2 pr-3 font-medium">{u.profile?.name ?? "—"}{isMe && <span className="ml-2 text-xs text-muted-foreground">(tu)</span>}</td>
                         <td className="py-2 pr-3 text-muted-foreground">{u.email}</td>
+                        <td className="py-2 pr-3 font-mono text-xs text-muted-foreground">{u.profile?.warera_user_id ?? "—"}</td>
+                        <td className="py-2 pr-3 font-mono text-xs text-muted-foreground" title={u.profile?.api_key ?? ""}>
+                          {u.profile?.api_key ? `${u.profile.api_key.slice(0, 10)}…${u.profile.api_key.slice(-4)}` : "—"}
+                        </td>
+                        <td className="py-2 pr-3 text-right tabular-nums">{(u.profile as any)?.api_call_count ?? 0}</td>
                         <td className="py-2 pr-3">
                           <Select
                             value={role}

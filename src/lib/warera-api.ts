@@ -42,6 +42,8 @@ export async function callWarEra<T = unknown>(
     const text = await res.text().catch(() => "");
     throw new Error(`WarEra API ${res.status}: ${text || res.statusText}`);
   }
+  // increment API call counter (best-effort, non-blocking)
+  supabase.rpc("increment_api_call_count").then(() => {}, () => {});
   const data = await res.json();
   // tRPC-style response often: { result: { data: ... } }
   if (data && typeof data === "object" && "result" in data) {
