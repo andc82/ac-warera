@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, LogOut, Settings, Sliders, LayoutDashboard,
   Globe2, Map, Users, Building2, Briefcase, Swords, Newspaper,
-  Coins, ArrowLeftRight, Trophy, Search,
+  Coins, ArrowLeftRight, Trophy, Search, UserCog,
 } from "lucide-react";
 
 export const Route = createFileRoute("/app")({ component: AppLayout });
@@ -86,7 +86,9 @@ function AppLayout() {
                 <SidebarGroupLabel>Admin</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    <Item to="/app/admin" icon={Sliders} label="Settings globali" active={isActive("/app/admin")} />
+                    <Item to="/app/admin" icon={Sliders} label="Settings globali" active={isActive("/app/admin") && !isActive("/app/admin/users")} />
+                    <Item to="/app/admin/users" icon={UserCog} label="Utenti" active={isActive("/app/admin/users")} />
+
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
