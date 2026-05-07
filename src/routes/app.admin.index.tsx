@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { clearSettingsCache } from "@/lib/warera-api";
 
-export const Route = createFileRoute("/app/admin")({ component: AdminSettings });
+export const Route = createFileRoute("/app/admin/")({ component: AdminSettings });
 
 function AdminSettings() {
   const { isAdmin, loading } = useAuth();
