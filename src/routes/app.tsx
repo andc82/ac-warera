@@ -106,11 +106,11 @@ function AppLayout() {
         </Sidebar>
 
         <SidebarInset className="flex-1 flex flex-col">
-          <header className="h-12 flex items-center gap-2 border-b border-border/60 px-3 sticky top-0 z-10 bg-background/80 backdrop-blur">
+          <header className="h-10 flex items-center gap-2 border-b border-border/60 px-3 sticky top-0 z-10 bg-background/80 backdrop-blur">
             <SidebarTrigger />
-            <div className="text-sm text-muted-foreground">War Era Command</div>
+            <div className="text-xs text-muted-foreground">War Era Command</div>
           </header>
-          <main className="flex-1 p-4 md:p-6"><Outlet /></main>
+          <main className="flex-1 p-3 md:p-4"><Outlet /></main>
         </SidebarInset>
       </div>
     </SidebarProvider>
