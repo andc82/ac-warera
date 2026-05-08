@@ -91,10 +91,18 @@
 
 @layer base {
   * { border-color: var(--color-border); }
+  html { font-size: 14px; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: ui-sans-serif, system-ui, sans-serif;
   }
-  h1, h2, h3, h4 { font-family: "Rajdhani", "Oswald", ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.02em; }
+  h1, h2, h3, h4 { font-family: "Rajdhani", "Oswald", ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.01em; font-weight: 600; }
+  /* Tighter card spacing across the app */
+  [data-slot="card"] { gap: 0.5rem; padding-block: 0.75rem; }
+  [data-slot="card-header"] { padding-inline: 0.875rem; }
+  [data-slot="card-content"] { padding-inline: 0.875rem; }
+  [data-slot="card-footer"] { padding-inline: 0.875rem; }
+  [data-slot="card-title"] { font-size: 0.95rem; }
+  [data-slot="card-description"] { font-size: 0.8rem; }
 }
