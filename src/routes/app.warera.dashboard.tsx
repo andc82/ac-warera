@@ -4,7 +4,7 @@ import { useWarEra } from "@/hooks/use-warera";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader, LoadingState, ErrorState, StatTile, fmtNum } from "@/components/warera-ui";
-import { LayoutDashboard, AlertCircle, Trophy, Coins, Swords, Globe2, Building2, Shield } from "lucide-react";
+import { LayoutDashboard, AlertCircle, Trophy, Coins, Shield } from "lucide-react";
 
 export const Route = createFileRoute("/app/warera/dashboard")({ component: Page });
 
