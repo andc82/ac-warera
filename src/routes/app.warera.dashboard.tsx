@@ -187,6 +187,7 @@ function Page() {
                 <StatTile label="Armi" value={fmtNum(wealth.weapons)} />
                 <StatTile label="Equip." value={fmtNum(wealth.equipments)} />
               </CardContent>
+              <CardContent className="pt-0"><ApiInfo calls={[meCall]} /></CardContent>
             </Card>
           )}
 
