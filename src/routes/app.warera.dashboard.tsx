@@ -4,8 +4,9 @@ import { useWarEra } from "@/hooks/use-warera";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PageHeader, LoadingState, ErrorState, StatTile, fmtNum } from "@/components/warera-ui";
-import { LayoutDashboard, AlertCircle, Trophy, Coins, Shield, RefreshCw, User as UserIcon, BarChart3, Globe2 } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { PageHeader, LoadingState, ErrorState, StatTile, JsonBlock, fmtNum } from "@/components/warera-ui";
+import { LayoutDashboard, AlertCircle, Trophy, Coins, Shield, RefreshCw, User as UserIcon, BarChart3, Globe2, ChevronDown, Code2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/warera/dashboard")({ component: Page });
 
