@@ -4,8 +4,9 @@ import { useWarEra } from "@/hooks/use-warera";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PageHeader, LoadingState, ErrorState, StatTile, fmtNum } from "@/components/warera-ui";
-import { LayoutDashboard, AlertCircle, Trophy, Coins, Shield, RefreshCw, User as UserIcon, BarChart3, Globe2 } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { PageHeader, LoadingState, ErrorState, StatTile, JsonBlock, fmtNum } from "@/components/warera-ui";
+import { LayoutDashboard, AlertCircle, Trophy, Coins, Shield, RefreshCw, User as UserIcon, BarChart3, Globe2, ChevronDown, Code2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/warera/dashboard")({ component: Page });
 
@@ -68,6 +69,44 @@ function SectionHeader({ icon: Icon, title, onRefresh, busy }: {
   );
 }
 
+interface ApiCall {
+  endpoint: string;
+  request: Record<string, unknown>;
+  data?: unknown;
+  error?: unknown;
+}
+
+function ApiInfo({ calls }: { calls: ApiCall[] }) {
+  return (
+    <div className="mt-2 space-y-1.5">
+      {calls.map((c, i) => (
+        <Collapsible key={i}>
+          <div className="rounded-md border border-border/60 bg-muted/10">
+            <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left hover:bg-muted/20">
+              <div className="flex items-center gap-2 min-w-0">
+                <Code2 className="h-3 w-3 text-muted-foreground shrink-0" />
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0">API</span>
+                <code className="text-[11px] font-mono text-foreground/80 truncate">{c.endpoint}</code>
+              </div>
+              <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180 shrink-0" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="border-t border-border/60 px-2.5 py-2 space-y-2">
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Request</div>
+                <JsonBlock data={c.request} />
+              </div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Response</div>
+                <JsonBlock data={c.error ? { error: String((c.error as Error)?.message ?? c.error) } : c.data} />
+              </div>
+            </CollapsibleContent>
+          </div>
+        </Collapsible>
+      ))}
+    </div>
+  );
+}
+
 function Page() {
   const { profile } = useAuth();
   const uid = profile?.warera_user_id;
@@ -103,6 +142,10 @@ function Page() {
   const rankings = me?.rankings ?? {};
   const rankingEntries = Object.entries(rankings).filter(([k]) => k in RANKING_LABELS);
 
+  const meCall: ApiCall = { endpoint: "/user.getUserById", request: { userId: uid }, data: meQ.data, error: meQ.error };
+  const countriesCall: ApiCall = { endpoint: "/country.getAllCountries", request: {}, data: countriesQ.data, error: countriesQ.error };
+  const battlesCall: ApiCall = { endpoint: "/battle.getBattles", request: { isActive: true, limit: 5 }, data: battlesQ.data, error: battlesQ.error };
+
   return (
     <div className="max-w-6xl space-y-6">
       <PageHeader
@@ -124,6 +167,7 @@ function Page() {
               <StatTile label="Rank militare" value={fmtNum(me.militaryRank)} />
               <StatTile label="Skill point" value={fmtNum(me.leveling?.availableSkillPoints)} hint={`XP daily residui: ${fmtNum(me.leveling?.dailyXpLeft)}`} />
             </div>
+            <ApiInfo calls={[meCall]} />
           </section>
 
           {/* Patrimonio */}
@@ -143,6 +187,7 @@ function Page() {
                 <StatTile label="Armi" value={fmtNum(wealth.weapons)} />
                 <StatTile label="Equip." value={fmtNum(wealth.equipments)} />
               </CardContent>
+              <CardContent className="pt-0"><ApiInfo calls={[meCall]} /></CardContent>
             </Card>
           )}
 
@@ -166,6 +211,7 @@ function Page() {
                   ) : "—"
                 } />
               </div>
+              <ApiInfo calls={[meCall]} />
             </section>
           )}
 
@@ -191,6 +237,7 @@ function Page() {
                   </div>
                 ))}
               </CardContent>
+              <CardContent className="pt-0"><ApiInfo calls={[meCall]} /></CardContent>
             </Card>
           )}
         </>
@@ -209,6 +256,7 @@ function Page() {
           <Link to="/app/warera/battles"><StatTile label="Battaglie attive" value={fmtNum(battles?.items?.length)} hint="Apri elenco →" /></Link>
           <Link to="/app/warera/me"><StatTile label="Profilo completo" value={<Shield className="h-6 w-6 text-primary" />} hint="Tutti i dettagli →" /></Link>
         </div>
+        <ApiInfo calls={[countriesCall, battlesCall]} />
       </section>
     </div>
   );
