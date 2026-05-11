@@ -142,6 +142,10 @@ function Page() {
   const rankings = me?.rankings ?? {};
   const rankingEntries = Object.entries(rankings).filter(([k]) => k in RANKING_LABELS);
 
+  const meCall: ApiCall = { endpoint: "/user.getUserById", request: { userId: uid }, data: meQ.data, error: meQ.error };
+  const countriesCall: ApiCall = { endpoint: "/country.getAllCountries", request: {}, data: countriesQ.data, error: countriesQ.error };
+  const battlesCall: ApiCall = { endpoint: "/battle.getBattles", request: { isActive: true, limit: 5 }, data: battlesQ.data, error: battlesQ.error };
+
   return (
     <div className="max-w-6xl space-y-6">
       <PageHeader
