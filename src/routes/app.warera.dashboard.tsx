@@ -237,6 +237,7 @@ function Page() {
                   </div>
                 ))}
               </CardContent>
+              <CardContent className="pt-0"><ApiInfo calls={[meCall]} /></CardContent>
             </Card>
           )}
         </>
