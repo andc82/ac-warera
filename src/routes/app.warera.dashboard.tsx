@@ -69,6 +69,44 @@ function SectionHeader({ icon: Icon, title, onRefresh, busy }: {
   );
 }
 
+interface ApiCall {
+  endpoint: string;
+  request: Record<string, unknown>;
+  data?: unknown;
+  error?: unknown;
+}
+
+function ApiInfo({ calls }: { calls: ApiCall[] }) {
+  return (
+    <div className="mt-2 space-y-1.5">
+      {calls.map((c, i) => (
+        <Collapsible key={i}>
+          <div className="rounded-md border border-border/60 bg-muted/10">
+            <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left hover:bg-muted/20">
+              <div className="flex items-center gap-2 min-w-0">
+                <Code2 className="h-3 w-3 text-muted-foreground shrink-0" />
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0">API</span>
+                <code className="text-[11px] font-mono text-foreground/80 truncate">{c.endpoint}</code>
+              </div>
+              <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180 shrink-0" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="border-t border-border/60 px-2.5 py-2 space-y-2">
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Request</div>
+                <JsonBlock data={c.request} />
+              </div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Response</div>
+                <JsonBlock data={c.error ? { error: String((c.error as Error)?.message ?? c.error) } : c.data} />
+              </div>
+            </CollapsibleContent>
+          </div>
+        </Collapsible>
+      ))}
+    </div>
+  );
+}
+
 function Page() {
   const { profile } = useAuth();
   const uid = profile?.warera_user_id;
