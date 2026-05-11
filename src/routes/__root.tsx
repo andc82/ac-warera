@@ -43,8 +43,8 @@ export const Route = createRootRoute({
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "AC War Era Dashboard" },
       { name: "twitter:description", content: "Call Graph Explorer visualizes JSON data to reconstruct call hierarchies based on request IDs and arguments." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f4da4c04-39d2-4fb3-aae5-23cf89fa818a/id-preview-e93a1a8b--a78ed372-f2db-4cc5-af20-392b1f59bba1.lovable.app-1777981290108.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f4da4c04-39d2-4fb3-aae5-23cf89fa818a/id-preview-e93a1a8b--a78ed372-f2db-4cc5-af20-392b1f59bba1.lovable.app-1777981290108.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/187ccc68-9550-4e87-852c-38fee280e39a" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/187ccc68-9550-4e87-852c-38fee280e39a" },
     ],
     links: [
       {
