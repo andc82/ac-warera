@@ -167,6 +167,7 @@ function Page() {
               <StatTile label="Rank militare" value={fmtNum(me.militaryRank)} />
               <StatTile label="Skill point" value={fmtNum(me.leveling?.availableSkillPoints)} hint={`XP daily residui: ${fmtNum(me.leveling?.dailyXpLeft)}`} />
             </div>
+            <ApiInfo calls={[meCall]} />
           </section>
 
           {/* Patrimonio */}
