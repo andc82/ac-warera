@@ -256,6 +256,7 @@ function Page() {
           <Link to="/app/warera/battles"><StatTile label="Battaglie attive" value={fmtNum(battles?.items?.length)} hint="Apri elenco →" /></Link>
           <Link to="/app/warera/me"><StatTile label="Profilo completo" value={<Shield className="h-6 w-6 text-primary" />} hint="Tutti i dettagli →" /></Link>
         </div>
+        <ApiInfo calls={[countriesCall, battlesCall]} />
       </section>
     </div>
   );
