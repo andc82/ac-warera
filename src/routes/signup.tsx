@@ -59,7 +59,7 @@ function SignupPage() {
               <Field label="Login (email)"><Input type="email" required value={form.email} onChange={set("email")} /></Field>
               <Field label="Password"><Input type="password" required value={form.password} onChange={set("password")} /></Field>
               <Field label="Conferma password"><Input type="password" required value={form.confirm} onChange={set("confirm")} /></Field>
-              <Field label="UserId (War Era)"><Input value={form.warera_user_id} onChange={set("warera_user_id")} placeholder="es. 69d9744b02ab9ef04637eb3c" /></Field>
+              <Field label="UserId (War Era)"><Input value={form.warera_user_id} onChange={set("warera_user_id")} placeholder="es. 6512a3f9b1c4d8e7f0a92b5d" /></Field>
               <Field label="API Key (War Era)"><Input value={form.api_key} onChange={set("api_key")} placeholder="wae_…" /></Field>
               <Button type="submit" disabled={submitting} className="w-full mt-2">
                 {submitting ? "Registrazione…" : "Registrati"}
