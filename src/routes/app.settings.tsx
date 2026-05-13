@@ -55,8 +55,8 @@ function SettingsPage() {
         <CardContent>
           <form onSubmit={onSave} className="space-y-4">
             <Field label="Nome"><Input value={name} onChange={(e) => setName(e.target.value)} required /></Field>
-            <Field label="UserId (War Era)"><Input value={wid} onChange={(e) => setWid(e.target.value)} /></Field>
-            <Field label="API Key (War Era)"><Input value={key} onChange={(e) => setKey(e.target.value)} /></Field>
+            <Field label="UserId (War Era)"><Input value={wid} onChange={(e) => setWid(e.target.value)} required /></Field>
+            <Field label="API Key (War Era)"><Input value={key} onChange={(e) => setKey(e.target.value)} required /></Field>
             <div className="border-t border-border pt-4 space-y-4">
               <p className="text-sm text-muted-foreground">Lascia vuoto per non cambiare la password.</p>
               <Field label="Nuova password"><Input type="password" value={pwd} onChange={(e) => setPwd(e.target.value)} autoComplete="new-password" /></Field>
