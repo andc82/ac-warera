@@ -22,12 +22,13 @@ function SettingsPage() {
   const onSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+    if (!name.trim() || !wid.trim() || !key.trim()) return toast.error("Nome, UserId e API Key sono obbligatori");
     if (pwd && pwd !== pwdc) return toast.error("Le password non coincidono");
     if (pwd && pwd.length < 8) return toast.error("Password minimo 8 caratteri");
     setSaving(true);
     const { error } = await supabase
       .from("profiles")
-      .update({ name, warera_user_id: wid || null, api_key: key || null })
+      .update({ name: name.trim(), warera_user_id: wid.trim(), api_key: key.trim() })
       .eq("id", user.id);
     if (error) { setSaving(false); return toast.error(error.message); }
     if (pwd) {
