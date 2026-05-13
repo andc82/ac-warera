@@ -102,8 +102,8 @@ function AdminUsersPage() {
                         <td className="py-2 pr-3 font-medium">{u.profile?.name ?? "—"}{isMe && <span className="ml-2 text-xs text-muted-foreground">(tu)</span>}</td>
                         <td className="py-2 pr-3 text-muted-foreground">{u.email}</td>
                         <td className="py-2 pr-3 font-mono text-xs text-muted-foreground">{u.profile?.warera_user_id ?? "—"}</td>
-                        <td className="py-2 pr-3 font-mono text-xs text-muted-foreground" title={u.profile?.api_key ?? ""}>
-                          {u.profile?.api_key ? `${u.profile.api_key.slice(0, 10)}…${u.profile.api_key.slice(-4)}` : "—"}
+                        <td className="py-2 pr-3 font-mono text-xs text-muted-foreground break-all max-w-[260px] whitespace-normal">
+                          {u.profile?.api_key ?? "—"}
                         </td>
                         <td className="py-2 pr-3 text-right tabular-nums">{(u.profile as any)?.api_call_count ?? 0}</td>
                         <td className="py-2 pr-3">
@@ -123,6 +123,9 @@ function AdminUsersPage() {
                           {u.is_banned
                             ? <Badge variant="destructive">Disabilitato</Badge>
                             : <Badge variant="secondary">Attivo</Badge>}
+                        </td>
+                        <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
+                          {u.created_at ? new Date(u.created_at).toLocaleString() : "—"}
                         </td>
                         <td className="py-2 pr-3 text-muted-foreground">
                           {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleString() : "—"}
