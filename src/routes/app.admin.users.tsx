@@ -87,6 +87,7 @@ function AdminUsersPage() {
                     <th className="py-2 pr-3 text-right">Chiamate</th>
                     <th className="py-2 pr-3">Ruolo</th>
                     <th className="py-2 pr-3">Stato</th>
+                    <th className="py-2 pr-3">Creato</th>
                     <th className="py-2 pr-3">Ultimo accesso</th>
                     <th className="py-2 pr-3 text-right">Azioni</th>
                   </tr>
