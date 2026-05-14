@@ -11,14 +11,19 @@ export const Route = createFileRoute("/app/warera/regions/")({ component: Region
 interface Region { _id?: string; name?: string; country?: string; countryCode?: string; mainCity?: string; isCapital?: boolean; development?: number; biome?: string }
 
 function RegionsPage() {
-  const q = useWarEra<Region[] | Record<string, Region>>("/region.getRegionsObject", {});
+  const defaults = {};
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<Region[] | Record<string, Region>>("/region.getRegionsObject", body);
   const arr = useMemo(() => Array.isArray(q.data) ? q.data : Object.values(q.data ?? {}), [q.data]);
   const [s, setS] = useState("");
   const list = useMemo(() => {
     const ss = s.trim().toLowerCase();
     return ss ? arr.filter((r) => (r.name ?? "").toLowerCase().includes(ss) || (r.countryCode ?? "").toLowerCase().includes(ss)) : arr;
   }, [arr, s]);
-  const call: ApiCall = { endpoint: "/region.getRegionsObject", request: {}, data: q.data, error: q.error };
+  const call: ApiCall = {
+    endpoint: "/region.getRegionsObject", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div>
