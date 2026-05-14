@@ -7,9 +7,14 @@ import { Coins } from "lucide-react";
 export const Route = createFileRoute("/app/warera/items")({ component: ItemsPage });
 
 function ItemsPage() {
-  const q = useWarEra<Record<string, number>>("/itemTrading.getPrices", {});
+  const defaults = {};
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<Record<string, number>>("/itemTrading.getPrices", body);
   const entries = Object.entries(q.data ?? {}).sort((a, b) => b[1] - a[1]);
-  const call: ApiCall = { endpoint: "/itemTrading.getPrices", request: {}, data: q.data, error: q.error };
+  const call: ApiCall = {
+    endpoint: "/itemTrading.getPrices", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl">
