@@ -15,9 +15,13 @@ interface Battle {
 
 function BattlesPage() {
   const [tab, setTab] = useState<"active" | "all">("active");
-  const params = tab === "active" ? { isActive: true, limit: 30 } : { limit: 30 };
-  const q = useWarEra<{ items?: Battle[] }>("/battle.getBattles", params);
-  const call: ApiCall = { endpoint: "/battle.getBattles", request: params, data: q.data, error: q.error };
+  const defaults = tab === "active" ? { isActive: true, limit: 30 } : { limit: 30 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: Battle[] }>("/battle.getBattles", body);
+  const call: ApiCall = {
+    endpoint: "/battle.getBattles", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-6xl">
