@@ -17,10 +17,12 @@ function CompaniesPage() {
   const [active, setActive] = useState(myWid);
 
   // When profile loads, default to my wid if user hasn't typed anything yet.
-  if (myWid && !userId && !active) {
-    setUserId(myWid);
-    setActive(myWid);
-  }
+  useEffect(() => {
+    if (myWid && !userId && !active) {
+      setUserId(myWid);
+      setActive(myWid);
+    }
+  }, [myWid, userId, active]);
 
   const defaults = { userId: active || myWid, perPage: 50 };
   const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
