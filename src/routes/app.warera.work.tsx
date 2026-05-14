@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useWarEra } from "@/hooks/use-warera";
 import {
   PageHeader, LoadingState, ErrorState, SectionHeader, ApiInfo, JsonBlock,
-  StatTile, UserLink, RegionLink, fmtMoney, fmtNum, type ApiCall,
+  StatTile, UserLink, RegionLink, fmtMoney, fmtNum, useApiBody, type ApiCall,
 } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, BarChart3, ListOrdered } from "lucide-react";
