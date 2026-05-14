@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtMoney, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtMoney, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Coins } from "lucide-react";
 
