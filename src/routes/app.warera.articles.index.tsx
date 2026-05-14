@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, UserLink, fmtRelative, fmtNum, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, UserLink, fmtRelative, fmtNum, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Newspaper } from "lucide-react";
