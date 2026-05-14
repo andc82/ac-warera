@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useWarEra } from "@/hooks/use-warera";
 import {
   PageHeader, LoadingState, ErrorState, StatTile, ApiInfo, SectionHeader,
-  CountryLink, fmtNum, fmtMoney, fmtRelative, TierBadge, type ApiCall,
+  CountryLink, fmtNum, fmtMoney, fmtRelative, TierBadge, useApiBody, type ApiCall,
 } from "@/components/warera-ui";
 import { Shield, User as UserIcon, Coins, Trophy, Swords, Building2, ShieldCheck, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -79,9 +79,16 @@ function MePage() {
   const { profile } = useAuth();
   const uid = profile?.warera_user_id ?? "";
 
-  const meQ = useWarEra<User>(uid ? "/user.getUserById" : null, { userId: uid });
-  const equipQ = useWarEra<Equipment>(uid ? "/inventory.fetchCurrentEquipment" : null, { userId: uid });
-  const compsQ = useWarEra<{ items?: string[] }>(uid ? "/company.getCompanies" : null, { userId: uid, perPage: 50 });
+  const meDefaults = { userId: uid };
+  const equipDefaults = { userId: uid };
+  const compsDefaults = { userId: uid, perPage: 50 };
+  const meBody = useApiBody<Record<string, unknown>>(meDefaults);
+  const equipBody = useApiBody<Record<string, unknown>>(equipDefaults);
+  const compsBody = useApiBody<Record<string, unknown>>(compsDefaults);
+
+  const meQ = useWarEra<User>(uid ? "/user.getUserById" : null, meBody.body);
+  const equipQ = useWarEra<Equipment>(uid ? "/inventory.fetchCurrentEquipment" : null, equipBody.body);
+  const compsQ = useWarEra<{ items?: string[] }>(uid ? "/company.getCompanies" : null, compsBody.body);
   const muQ = useWarEra<Mu>(meQ.data?.mu ? "/mu.getById" : null, { muId: meQ.data?.mu ?? "" });
 
   if (!uid) {
@@ -103,9 +110,18 @@ function MePage() {
   const refetchProfile = () => { meQ.refetch(); equipQ.refetch(); compsQ.refetch(); muQ.refetch(); };
   const anyFetching = meQ.isFetching || equipQ.isFetching || compsQ.isFetching || muQ.isFetching;
 
-  const meCall: ApiCall = { endpoint: "/user.getUserById", request: { userId: uid }, data: meQ.data, error: meQ.error };
-  const equipCall: ApiCall = { endpoint: "/inventory.fetchCurrentEquipment", request: { userId: uid }, data: equipQ.data, error: equipQ.error };
-  const compsCall: ApiCall = { endpoint: "/company.getCompanies", request: { userId: uid, perPage: 50 }, data: compsQ.data, error: compsQ.error };
+  const meCall: ApiCall = {
+    endpoint: "/user.getUserById", request: meBody.body, data: meQ.data, error: meQ.error,
+    editable: true, defaults: meDefaults, onApply: meBody.apply, onReload: () => meQ.refetch(),
+  };
+  const equipCall: ApiCall = {
+    endpoint: "/inventory.fetchCurrentEquipment", request: equipBody.body, data: equipQ.data, error: equipQ.error,
+    editable: true, defaults: equipDefaults, onApply: equipBody.apply, onReload: () => equipQ.refetch(),
+  };
+  const compsCall: ApiCall = {
+    endpoint: "/company.getCompanies", request: compsBody.body, data: compsQ.data, error: compsQ.error,
+    editable: true, defaults: compsDefaults, onApply: compsBody.apply, onReload: () => compsQ.refetch(),
+  };
   const muCall: ApiCall = { endpoint: "/mu.getById", request: { muId: me?.mu ?? "" }, data: muQ.data, error: muQ.error };
 
   const rankings = Object.entries(me?.rankings ?? {}).filter(([k]) => k in RANKING_LABELS);

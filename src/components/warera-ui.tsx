@@ -3,7 +3,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, AlertTriangle, RefreshCw, ChevronDown, Code2 } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useWarEra } from "@/hooks/use-warera";
 
 export function PageHeader({ title, description, icon: Icon, actions }: {
@@ -135,36 +135,122 @@ export interface ApiCall {
   request: Record<string, unknown>;
   data?: unknown;
   error?: unknown;
+  /** When provided, an editable JSON body is shown with Apply / Reset / Reload. */
+  editable?: boolean;
+  /** Default body used by the "Reset ai default" button. Falls back to `request`. */
+  defaults?: Record<string, unknown>;
+  /** Called when the user clicks "Applica". Receives the parsed JSON body. */
+  onApply?: (body: Record<string, unknown>) => void;
+  /** Called when the user clicks "Ricarica". Re-runs the request with current params. */
+  onReload?: () => void;
+}
+
+const MAX_BODY_LEN = 8192;
+
+function ApiCallRow({ c }: { c: ApiCall }) {
+  const [text, setText] = useState<string>(() => JSON.stringify(c.request ?? {}, null, 2));
+  const [parseErr, setParseErr] = useState<string | null>(null);
+  const lastSyncedRef = useRef<string>(JSON.stringify(c.request ?? {}, null, 2));
+
+  // Re-sync editor when external request changes (e.g. after Apply or default load),
+  // but don't clobber user typing in progress.
+  useEffect(() => {
+    const next = JSON.stringify(c.request ?? {}, null, 2);
+    if (next !== lastSyncedRef.current && text === lastSyncedRef.current) {
+      setText(next);
+      setParseErr(null);
+    }
+    lastSyncedRef.current = next;
+  }, [c.request, text]);
+
+  const handleApply = () => {
+    if (text.length > MAX_BODY_LEN) {
+      setParseErr(`Body troppo lungo (max ${MAX_BODY_LEN} caratteri)`);
+      return;
+    }
+    try {
+      const parsed = JSON.parse(text);
+      if (typeof parsed !== "object" || Array.isArray(parsed) || parsed === null) {
+        setParseErr("Il body deve essere un oggetto JSON");
+        return;
+      }
+      setParseErr(null);
+      c.onApply?.(parsed as Record<string, unknown>);
+    } catch (e) {
+      setParseErr(e instanceof Error ? e.message : String(e));
+    }
+  };
+
+  const handleReset = () => {
+    const def = c.defaults ?? c.request ?? {};
+    const next = JSON.stringify(def, null, 2);
+    setText(next);
+    setParseErr(null);
+    c.onApply?.(def as Record<string, unknown>);
+  };
+
+  return (
+    <Collapsible>
+      <div className="rounded-md border border-border/60 bg-muted/10">
+        <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left hover:bg-muted/20">
+          <div className="flex items-center gap-2 min-w-0">
+            <Code2 className="h-3 w-3 text-muted-foreground shrink-0" />
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0">API</span>
+            <code className="text-[11px] font-mono text-foreground/80 truncate">{c.endpoint}</code>
+            {c.editable ? <Badge variant="outline" className="text-[10px] border-primary/40 text-primary">editable</Badge> : null}
+            {c.error ? <Badge variant="outline" className="text-[10px] border-destructive/40 text-destructive">err</Badge> : null}
+          </div>
+          <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180 shrink-0" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="border-t border-border/60 px-2.5 py-2 space-y-2">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Request body</div>
+              {c.editable && (
+                <div className="flex items-center gap-1">
+                  {c.onReload && (
+                    <Button type="button" variant="outline" size="sm" className="h-6 px-2 text-[10px]" onClick={c.onReload}>
+                      <RefreshCw className="h-3 w-3 mr-1" /> Ricarica
+                    </Button>
+                  )}
+                  <Button type="button" variant="outline" size="sm" className="h-6 px-2 text-[10px]" onClick={handleReset}>
+                    Reset default
+                  </Button>
+                  <Button type="button" size="sm" className="h-6 px-2 text-[10px]" onClick={handleApply}>
+                    Applica
+                  </Button>
+                </div>
+              )}
+            </div>
+            {c.editable ? (
+              <>
+                <textarea
+                  className="w-full font-mono text-[11px] bg-muted/40 border border-border rounded-md p-2 min-h-[80px] focus:outline-none focus:ring-1 focus:ring-primary"
+                  value={text}
+                  onChange={(e) => { setText(e.target.value); setParseErr(null); }}
+                  spellCheck={false}
+                  maxLength={MAX_BODY_LEN}
+                />
+                {parseErr && <div className="text-[10px] text-destructive mt-1">{parseErr}</div>}
+              </>
+            ) : (
+              <JsonBlock data={c.request} />
+            )}
+          </div>
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Response</div>
+            <JsonBlock data={c.error ? { error: String((c.error as Error)?.message ?? c.error) } : c.data} />
+          </div>
+        </CollapsibleContent>
+      </div>
+    </Collapsible>
+  );
 }
 
 export function ApiInfo({ calls }: { calls: ApiCall[] }) {
   return (
     <div className="mt-2 space-y-1.5">
-      {calls.map((c, i) => (
-        <Collapsible key={i}>
-          <div className="rounded-md border border-border/60 bg-muted/10">
-            <CollapsibleTrigger className="group flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left hover:bg-muted/20">
-              <div className="flex items-center gap-2 min-w-0">
-                <Code2 className="h-3 w-3 text-muted-foreground shrink-0" />
-                <span className="text-[10px] uppercase tracking-wider text-muted-foreground shrink-0">API</span>
-                <code className="text-[11px] font-mono text-foreground/80 truncate">{c.endpoint}</code>
-                {c.error ? <Badge variant="outline" className="text-[10px] border-destructive/40 text-destructive">err</Badge> : null}
-              </div>
-              <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180 shrink-0" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="border-t border-border/60 px-2.5 py-2 space-y-2">
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Request</div>
-                <JsonBlock data={c.request} />
-              </div>
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Response</div>
-                <JsonBlock data={c.error ? { error: String((c.error as Error)?.message ?? c.error) } : c.data} />
-              </div>
-            </CollapsibleContent>
-          </div>
-        </Collapsible>
-      ))}
+      {calls.map((c, i) => <ApiCallRow key={`${c.endpoint}-${i}`} c={c} />)}
     </div>
   );
 }
@@ -219,3 +305,29 @@ export function TierBadge({ tier }: { tier?: string }) {
   };
   return <Badge variant="outline" className={`text-[10px] capitalize ${cls[tier] ?? ""}`}>{tier}</Badge>;
 }
+
+/**
+ * Manage an editable request body for a useWarEra call.
+ * Re-syncs to `defaults` whenever they change AND the user hasn't customized the body.
+ */
+export function useApiBody<T extends Record<string, unknown>>(defaults: T) {
+  const [body, setBody] = useState<T>(defaults);
+  const [dirty, setDirty] = useState(false);
+  const defaultsKey = JSON.stringify(defaults);
+  const lastDefaultsKey = useRef(defaultsKey);
+
+  useEffect(() => {
+    if (defaultsKey !== lastDefaultsKey.current) {
+      lastDefaultsKey.current = defaultsKey;
+      if (!dirty) setBody(defaults);
+    }
+  }, [defaultsKey, defaults, dirty]);
+
+  const apply = (next: Record<string, unknown>) => {
+    setBody(next as T);
+    setDirty(JSON.stringify(next) !== defaultsKey);
+  };
+  const reset = () => { setBody(defaults); setDirty(false); };
+  return { body, defaults, apply, reset, dirty };
+}
+

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, UserLink, fmtRelative, fmtNum, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, UserLink, fmtRelative, fmtNum, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Newspaper } from "lucide-react";
@@ -19,8 +19,13 @@ type T = typeof TYPES[number];
 
 function ArticlesPage() {
   const [type, setType] = useState<T>("last");
-  const q = useWarEra<{ items?: Article[] }>("/article.getArticlesPaginated", { type, limit: 30 });
-  const call: ApiCall = { endpoint: "/article.getArticlesPaginated", request: { type, limit: 30 }, data: q.data, error: q.error };
+  const defaults = { type, limit: 30 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: Article[] }>("/article.getArticlesPaginated", body);
+  const call: ApiCall = {
+    endpoint: "/article.getArticlesPaginated", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl">

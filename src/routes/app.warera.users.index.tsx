@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtRelative, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtRelative, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,9 +13,16 @@ export const Route = createFileRoute("/app/warera/users/")({ component: UsersPag
 function UsersPage() {
   const { profile } = useAuth();
   const [countryId, setCountryId] = useState("");
-  const params = countryId ? { countryId, perPage: 30 } : null;
-  const q = useWarEra<{ items?: { _id: string; createdAt?: string }[] }>(params ? "/user.getUsersByCountry" : null, params ?? {});
-  const call: ApiCall = { endpoint: "/user.getUsersByCountry", request: params ?? {}, data: q.data, error: q.error };
+  const defaults = countryId ? { countryId, perPage: 30 } : { perPage: 30 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: { _id: string; createdAt?: string }[] }>(
+    countryId || (body.countryId as string) ? "/user.getUsersByCountry" : null,
+    body,
+  );
+  const call: ApiCall = {
+    endpoint: "/user.getUsersByCountry", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl space-y-4">
@@ -42,7 +49,7 @@ function UsersPage() {
         ))}
         {q.data && !q.data.items?.length && countryId && <div className="text-xs text-muted-foreground italic col-span-full">Nessun utente trovato.</div>}
       </div>
-      {countryId && <ApiInfo calls={[call]} />}
+      <ApiInfo calls={[call]} />
     </div>
   );
 }

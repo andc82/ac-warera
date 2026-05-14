@@ -1,15 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtMoney, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, fmtMoney, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Coins } from "lucide-react";
 
 export const Route = createFileRoute("/app/warera/items")({ component: ItemsPage });
 
 function ItemsPage() {
-  const q = useWarEra<Record<string, number>>("/itemTrading.getPrices", {});
+  const defaults = {};
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<Record<string, number>>("/itemTrading.getPrices", body);
   const entries = Object.entries(q.data ?? {}).sort((a, b) => b[1] - a[1]);
-  const call: ApiCall = { endpoint: "/itemTrading.getPrices", request: {}, data: q.data, error: q.error };
+  const call: ApiCall = {
+    endpoint: "/itemTrading.getPrices", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl">

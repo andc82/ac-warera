@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useWarEra } from "@/hooks/use-warera";
 import {
   PageHeader, LoadingState, ErrorState, SectionHeader, ApiInfo, JsonBlock,
-  StatTile, UserLink, RegionLink, fmtMoney, fmtNum, type ApiCall,
+  StatTile, UserLink, RegionLink, fmtMoney, fmtNum, useApiBody, type ApiCall,
 } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, BarChart3, ListOrdered } from "lucide-react";
@@ -23,9 +23,11 @@ interface WorkOffer {
 }
 
 function WorkPage() {
+  const defaults = { limit: 50 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
   const offersQ = useWarEra<{ items?: WorkOffer[] } | WorkOffer[]>(
     "/workOffer.getWorkOffersPaginated",
-    { limit: 50 },
+    body,
   );
 
   const offers: WorkOffer[] = Array.isArray(offersQ.data)
@@ -46,9 +48,13 @@ function WorkPage() {
   const calls: ApiCall[] = [
     {
       endpoint: "/workOffer.getWorkOffersPaginated",
-      request: { limit: 50 },
+      request: body,
       data: offersQ.data,
       error: offersQ.error,
+      editable: true,
+      defaults,
+      onApply: apply,
+      onReload: () => offersQ.refetch(),
     },
   ];
 

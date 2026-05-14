@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, EmptyState, ApiInfo, SectionHeader, fmtMoney, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, EmptyState, ApiInfo, SectionHeader, fmtMoney, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Globe2 } from "lucide-react";
@@ -19,7 +19,9 @@ interface Country {
 }
 
 function CountriesList() {
-  const q = useWarEra<Country[]>("/country.getAllCountries", {});
+  const defaults = {};
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<Country[]>("/country.getAllCountries", body);
   const [search, setSearch] = useState("");
   const list = useMemo(() => {
     const arr = q.data ?? [];
@@ -28,7 +30,10 @@ function CountriesList() {
     return [...filtered].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""));
   }, [q.data, search]);
 
-  const call: ApiCall = { endpoint: "/country.getAllCountries", request: {}, data: q.data, error: q.error };
+  const call: ApiCall = {
+    endpoint: "/country.getAllCountries", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div>

@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,28 @@ export const Route = createFileRoute("/app/warera/companies/")({ component: Comp
 
 function CompaniesPage() {
   const { profile } = useAuth();
-  const [userId, setUserId] = useState(profile?.warera_user_id ?? "");
-  const [active, setActive] = useState(userId);
-  const q = useWarEra<{ items?: string[] }>(active ? "/company.getCompanies" : null, { userId: active, perPage: 50 });
-  const call: ApiCall = { endpoint: "/company.getCompanies", request: { userId: active, perPage: 50 }, data: q.data, error: q.error };
+  const myWid = profile?.warera_user_id ?? "";
+  const [userId, setUserId] = useState(myWid);
+  const [active, setActive] = useState(myWid);
+
+  // When profile loads, default to my wid if user hasn't typed anything yet.
+  useEffect(() => {
+    if (myWid && !userId && !active) {
+      setUserId(myWid);
+      setActive(myWid);
+    }
+  }, [myWid, userId, active]);
+
+  const defaults = { userId: active || myWid, perPage: 50 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: string[] }>(
+    body.userId ? "/company.getCompanies" : null,
+    body,
+  );
+  const call: ApiCall = {
+    endpoint: "/company.getCompanies", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-6xl space-y-4">
@@ -24,7 +42,7 @@ function CompaniesPage() {
         <Input placeholder="User ID proprietario" value={userId} onChange={(e) => setUserId(e.target.value)} onKeyDown={(e) => e.key === "Enter" && setActive(userId)} />
         <Button onClick={() => setActive(userId)} size="sm">Cerca</Button>
       </CardContent></Card>
-      <SectionHeader title="Risultati" hint={active ? `Owner …${active.slice(-6)} · ${q.data?.items?.length ?? 0}` : "Inserisci un User ID"} onRefresh={() => q.refetch()} busy={q.isFetching} />
+      <SectionHeader title="Risultati" hint={(body.userId as string) ? `Owner …${(body.userId as string).slice(-6)} · ${q.data?.items?.length ?? 0}` : "Inserisci un User ID"} onRefresh={() => q.refetch()} busy={q.isFetching} />
       {q.isLoading && <LoadingState />}
       {q.error && <ErrorState error={q.error} />}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -37,7 +55,7 @@ function CompaniesPage() {
         ))}
         {q.data && !q.data.items?.length && <div className="text-xs text-muted-foreground italic col-span-full">Nessuna azienda.</div>}
       </div>
-      {active && <ApiInfo calls={[call]} />}
+      <ApiInfo calls={[call]} />
     </div>
   );
 }
