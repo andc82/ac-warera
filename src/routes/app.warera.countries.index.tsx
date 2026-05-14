@@ -19,7 +19,9 @@ interface Country {
 }
 
 function CountriesList() {
-  const q = useWarEra<Country[]>("/country.getAllCountries", {});
+  const defaults = {};
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<Country[]>("/country.getAllCountries", body);
   const [search, setSearch] = useState("");
   const list = useMemo(() => {
     const arr = q.data ?? [];
@@ -28,7 +30,10 @@ function CountriesList() {
     return [...filtered].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""));
   }, [q.data, search]);
 
-  const call: ApiCall = { endpoint: "/country.getAllCountries", request: {}, data: q.data, error: q.error };
+  const call: ApiCall = {
+    endpoint: "/country.getAllCountries", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div>
