@@ -3,7 +3,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, AlertTriangle, RefreshCw, ChevronDown, Code2 } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useWarEra } from "@/hooks/use-warera";
 
 export function PageHeader({ title, description, icon: Icon, actions }: {
