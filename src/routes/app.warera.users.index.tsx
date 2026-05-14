@@ -49,7 +49,7 @@ function UsersPage() {
         ))}
         {q.data && !q.data.items?.length && countryId && <div className="text-xs text-muted-foreground italic col-span-full">Nessun utente trovato.</div>}
       </div>
-      {countryId && <ApiInfo calls={[call]} />}
+      <ApiInfo calls={[call]} />
     </div>
   );
 }
