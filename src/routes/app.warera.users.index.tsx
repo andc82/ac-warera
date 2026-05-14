@@ -13,9 +13,16 @@ export const Route = createFileRoute("/app/warera/users/")({ component: UsersPag
 function UsersPage() {
   const { profile } = useAuth();
   const [countryId, setCountryId] = useState("");
-  const params = countryId ? { countryId, perPage: 30 } : null;
-  const q = useWarEra<{ items?: { _id: string; createdAt?: string }[] }>(params ? "/user.getUsersByCountry" : null, params ?? {});
-  const call: ApiCall = { endpoint: "/user.getUsersByCountry", request: params ?? {}, data: q.data, error: q.error };
+  const defaults = countryId ? { countryId, perPage: 30 } : { perPage: 30 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: { _id: string; createdAt?: string }[] }>(
+    countryId || (body.countryId as string) ? "/user.getUsersByCountry" : null,
+    body,
+  );
+  const call: ApiCall = {
+    endpoint: "/user.getUsersByCountry", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl space-y-4">
