@@ -19,8 +19,13 @@ type T = typeof TYPES[number];
 
 function ArticlesPage() {
   const [type, setType] = useState<T>("last");
-  const q = useWarEra<{ items?: Article[] }>("/article.getArticlesPaginated", { type, limit: 30 });
-  const call: ApiCall = { endpoint: "/article.getArticlesPaginated", request: { type, limit: 30 }, data: q.data, error: q.error };
+  const defaults = { type, limit: 30 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: Article[] }>("/article.getArticlesPaginated", body);
+  const call: ApiCall = {
+    endpoint: "/article.getArticlesPaginated", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
 
   return (
     <div className="max-w-5xl">
