@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useWarEra } from "@/hooks/use-warera";
 import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, useApiBody, type ApiCall } from "@/components/warera-ui";
