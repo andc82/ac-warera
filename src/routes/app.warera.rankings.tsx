@@ -18,8 +18,13 @@ interface Item { _id?: string; user?: string; country?: string; value?: number; 
 
 function RankingsPage() {
   const [type, setType] = useState<T>("userDamages");
-  const q = useWarEra<{ items?: Item[] }>("/ranking.getRanking", { rankingType: type, limit: 50 });
-  const call: ApiCall = { endpoint: "/ranking.getRanking", request: { rankingType: type, limit: 50 }, data: q.data, error: q.error };
+  const defaults = { rankingType: type, limit: 50 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
+  const q = useWarEra<{ items?: Item[] }>("/ranking.getRanking", body);
+  const call: ApiCall = {
+    endpoint: "/ranking.getRanking", request: body, data: q.data, error: q.error,
+    editable: true, defaults, onApply: apply, onReload: () => q.refetch(),
+  };
   const isUser = type.startsWith("user") || type.startsWith("weeklyUser");
 
   return (
