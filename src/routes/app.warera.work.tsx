@@ -23,9 +23,11 @@ interface WorkOffer {
 }
 
 function WorkPage() {
+  const defaults = { limit: 50 };
+  const { body, apply } = useApiBody<Record<string, unknown>>(defaults);
   const offersQ = useWarEra<{ items?: WorkOffer[] } | WorkOffer[]>(
     "/workOffer.getWorkOffersPaginated",
-    { limit: 50 },
+    body,
   );
 
   const offers: WorkOffer[] = Array.isArray(offersQ.data)
@@ -46,9 +48,13 @@ function WorkPage() {
   const calls: ApiCall[] = [
     {
       endpoint: "/workOffer.getWorkOffersPaginated",
-      request: { limit: 50 },
+      request: body,
       data: offersQ.data,
       error: offersQ.error,
+      editable: true,
+      defaults,
+      onApply: apply,
+      onReload: () => offersQ.refetch(),
     },
   ];
 
