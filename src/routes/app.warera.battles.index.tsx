@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useWarEra } from "@/hooks/use-warera";
-import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, CountryLink, RegionLink, fmtNum, fmtRelative, type ApiCall } from "@/components/warera-ui";
+import { PageHeader, LoadingState, ErrorState, ApiInfo, SectionHeader, CountryLink, RegionLink, fmtNum, fmtRelative, useApiBody, type ApiCall } from "@/components/warera-ui";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Swords } from "lucide-react";
 
