@@ -305,3 +305,29 @@ export function TierBadge({ tier }: { tier?: string }) {
   };
   return <Badge variant="outline" className={`text-[10px] capitalize ${cls[tier] ?? ""}`}>{tier}</Badge>;
 }
+
+/**
+ * Manage an editable request body for a useWarEra call.
+ * Re-syncs to `defaults` whenever they change AND the user hasn't customized the body.
+ */
+export function useApiBody<T extends Record<string, unknown>>(defaults: T) {
+  const [body, setBody] = useState<T>(defaults);
+  const [dirty, setDirty] = useState(false);
+  const defaultsKey = JSON.stringify(defaults);
+  const lastDefaultsKey = useRef(defaultsKey);
+
+  useEffect(() => {
+    if (defaultsKey !== lastDefaultsKey.current) {
+      lastDefaultsKey.current = defaultsKey;
+      if (!dirty) setBody(defaults);
+    }
+  }, [defaultsKey, defaults, dirty]);
+
+  const apply = (next: Record<string, unknown>) => {
+    setBody(next as T);
+    setDirty(JSON.stringify(next) !== defaultsKey);
+  };
+  const reset = () => { setBody(defaults); setDirty(false); };
+  return { body, defaults, apply, reset, dirty };
+}
+
