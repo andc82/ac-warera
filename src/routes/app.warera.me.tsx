@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useWarEra } from "@/hooks/use-warera";
 import {
   PageHeader, LoadingState, ErrorState, StatTile, ApiInfo, SectionHeader,
-  CountryLink, fmtNum, fmtMoney, fmtRelative, TierBadge, type ApiCall,
+  CountryLink, fmtNum, fmtMoney, fmtRelative, TierBadge, useApiBody, type ApiCall,
 } from "@/components/warera-ui";
 import { Shield, User as UserIcon, Coins, Trophy, Swords, Building2, ShieldCheck, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
